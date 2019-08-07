@@ -1,0 +1,141 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+
+/*MEU CSS*/
+.nav-custom {
+    background-color: #222 !important;
+    color: lightcyan !important;
+    border-bottom: 0 !important;
+    /*height: 50px;*/
+}
+
+nav.nav-custom {
+    height: 80px;
+}
+
+    .nav-custom a {
+        background-color: #222 !important;
+        color: lightcyan !important;
+    }
+
+    .nav-custom a:hover {
+        color: #ffc107 !important;
+    }
+
+.logo{
+    margin-left: 50px;
+}
+
+
+
+.xpelum-logo::before {
+    position: absolute;
+    content: url(../img/logo-branco-notext.svg);
+    top: 13px;
+}
+
+.mt-banner {
+    margin-top: 80px;
+}
+
+.mt-banner-2 {
+    margin-top: 150px;
+}
+
+.luciano-hulk {
+    height: 550px;
+
+    background-image: url(../img/background-luciano-hulck-xp.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.frase-luciano{
+    max-width: 500px;
+}
+
+.form-luciano{
+    max-width: 300px;
+    margin-left:auto;
+}
+
+.centralizado{
+    margin: 0 auto;
+}
+
+.meu-card h3{
+    font-size: 1.5em;
+}
+
+.valor-investimento{
+    font-size: 1.8em;
+}
+
+.btn-investimento{
+    position: absolute;
+    bottom: 0;
+}
+
+.bg-cinza{
+    background-color: #f1f1f1;
+}
+
+a.logo:hover {
+    color: lightcyan !important;
+}
