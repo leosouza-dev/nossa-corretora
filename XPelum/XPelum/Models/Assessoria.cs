@@ -10,11 +10,11 @@
             Descricao = descricao;
         }
 
-        public int Id { get; private set;}
-        public string Nome { get; private set; }
-        public string Imagem { get; private set; }
-        public string Investimento { get; private set; }
-        public string Descricao { get; private set; }
+        public int Id { get; private set; }
+        public string Nome { get; }
+        public string Imagem { get; }
+        public string Investimento { get; }
+        public string Descricao { get; }
 
     }
 }
