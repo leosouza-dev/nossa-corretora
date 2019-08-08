@@ -12,15 +12,13 @@ namespace XPelum.Controllers
     public class HomeController : Controller
     {
         private readonly AssessoriaRepository _repository;
-
         public HomeController(AssessoriaRepository repository)
         {
             _repository = repository;
         }
 
         public IActionResult Index()
-        {
-            
+        {       
             return View(_repository.ListarTodas());
         }
 

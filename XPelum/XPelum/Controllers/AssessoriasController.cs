@@ -41,24 +41,19 @@ namespace XPelum.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateAssessoriaViewModel acessoriaVM)
+        public IActionResult Create(CreateAssessoriaViewModel assessoriaVM)
         {
             if (ModelState.IsValid)
             {
-                string uniqueFileName = null;  
-                if(acessoriaVM.Imagem != null)
-                {
-                    //usando a factory para salvar imagem
-                    var uploadImage = new UploadImageFactory(_hostingEnvironment);
-                    uniqueFileName = uploadImage.SalvarImagem(acessoriaVM);
-                }
+                var uploadImage = new UploadImageComponent(_hostingEnvironment);
+                var uniqueFileName = uploadImage.SalvaImagem(assessoriaVM.Imagem);
 
-                var acessoria = new Assessoria(acessoriaVM, uniqueFileName);
+                var assessoria = new Assessoria(assessoriaVM.Nome, uniqueFileName, assessoriaVM.investimento, assessoriaVM.Descricao);
 
-                _repository.Salvar(acessoria);
+                _repository.Salvar(assessoria);
                 return RedirectToAction(nameof(Index));
             }
-            return View(acessoriaVM);
+            return View(assessoriaVM);
         }
 
     }

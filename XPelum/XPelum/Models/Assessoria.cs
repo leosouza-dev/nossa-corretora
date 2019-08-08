@@ -8,20 +8,17 @@ namespace XPelum.Models
 {
     public class Assessoria
     {
-        public Assessoria()
-        {
+        public Assessoria(){}
 
+        public Assessoria(string nome, string imagem, string investimento, string descricao)
+        {
+            Nome = nome;
+            Imagem = imagem;
+            Investimento = investimento;
+            Descricao = descricao;
         }
 
-        public Assessoria(CreateAssessoriaViewModel assessoriaVM, string uniqueFileName)
-        {
-            Nome = assessoriaVM.Nome;
-            Imagem = uniqueFileName;
-            Investimento = assessoriaVM.investimento;
-            Descricao = assessoriaVM.Descricao;
-        }
-
-        public int Id { get; private set; }
+        public int Id { get; private set;}
         public string Nome { get; private set; }
         public string Imagem { get; private set; }
         public string Investimento { get; private set; }

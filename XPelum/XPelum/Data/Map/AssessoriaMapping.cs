@@ -12,7 +12,7 @@ namespace XPelum.Data.Map
     {
         public void Configure(EntityTypeBuilder<Assessoria> builder)
         {
-            //builder.HasKey(p => p.Id);
+            builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Nome)
                 .IsRequired()
