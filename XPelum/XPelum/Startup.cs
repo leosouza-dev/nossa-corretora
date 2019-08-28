@@ -16,6 +16,9 @@ using Microsoft.Extensions.DependencyInjection;
 using XPelum.Repository;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using XPelum.Models;
+using XPelum.Areas.Identity;
+using XPelum.Areas.Identity.Repository;
 
 namespace XPelum
 {
@@ -41,9 +44,27 @@ namespace XPelum
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<Cliente>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddErrorDescriber<ErrosCustomizados>(); 
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                //Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                //User settings.
+                options.User.AllowedUserNameCharacters =
+                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
+                options.User.RequireUniqueEmail = true;
+            });
+
 
             //meu dbcontext
             services.AddDbContext<MeuDbContext>(options =>
@@ -52,12 +73,9 @@ namespace XPelum
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<AssessoriaRepository, AssessoriaRepository>();
-
-            //services.AddSingleton<IFileProvider>(
-            //    new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img")));
+            services.AddScoped<UserRepository, UserRepository>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

@@ -85,7 +85,7 @@
             @foreach (var item in Model)
             {
                 <div class="col-md-3 mt-4 card meu-card">
-                    <img class="card-img-top" src="~/img/@Html.DisplayFor(modelItem => item.Imagem)" alt="Acessoria Private" />
+                    <img class="card-img-top" src="/img/@Html.DisplayFor(modelItem => item.Imagem)" alt="Acessoria Private" />
                     <h3 class="display-3">Assessoria <br /> @Html.DisplayFor(modelItem => item.Nome)</h3>
                     <div>
                         <p class="mt-5 font-weight-bold">

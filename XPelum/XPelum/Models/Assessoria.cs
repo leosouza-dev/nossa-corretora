@@ -15,6 +15,5 @@
         public string Imagem { get; }
         public string Investimento { get; }
         public string Descricao { get; }
-
     }
 }

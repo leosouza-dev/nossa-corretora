@@ -1,0 +1,61 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Dados Pessoais";
+}
+
+    <div class="container tela-registro">
+
+        <h1>@ViewData["Title"]</h1>
+
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.NomeCompleto"></label>
+                        <input asp-for="Input.NomeCompleto" placeholder="Nome Completo" class="form-control meu-input mb-4" style="box-shadow: none; border-radius:0 ;border-top: none; border-left: none; border-right:none" />
+                        <span asp-validation-for="Input.NomeCompleto
+                              " class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.Email"></label>
+                        <input asp-for="Input.Email" placeholder="Email" class="form-control meu-input mb-4" style="box-shadow: none; border-radius:0 ;border-top: none; border-left: none; border-right:none" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.CPF"></label>
+                        <input asp-for="Input.CPF" placeholder="111.111.111-11" class="form-control meu-input mb-4" style="box-shadow: none; border-radius:0 ;border-top: none; border-left: none; border-right:none" />
+                        <span asp-validation-for="Input.CPF" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.PhoneNumber"></label>
+                        <input asp-for="Input.PhoneNumber" placeholder="Celular" class="form-control meu-input mb-4" style="box-shadow: none; border-radius:0 ;border-top: none; border-left: none; border-right:none" />
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.Password"></label>
+                        <input asp-for="Input.Password" placeholder="Senha" class="form-control meu-input mb-4" style="box-shadow: none; border-radius:0 ;border-top: none; border-left: none; border-right:none" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.ConfirmPassword"></label>
+                        <input asp-for="Input.ConfirmPassword" placeholder="Confirmação de senha" class="form-control meu-input mb-4" style="box-shadow: none; border-radius:0 ;border-top: none; border-left: none; border-right:none" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-warning">Registrar</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
