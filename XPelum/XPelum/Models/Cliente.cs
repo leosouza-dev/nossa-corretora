@@ -16,12 +16,5 @@ namespace XPelum.Models
 
         public DateTime DataNascimento { get; set; }
 
-        public bool VerificarClientePorCpf(Cliente cliente)
-        {
-            if (cliente == null)
-                return true;
-            else
-                return false;
-        }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using XPelum.Areas.Identity.Repository;
+using XPelum.Areas.Identity.Services;
 using XPelum.Models;
 
 namespace XPelum.Areas.Identity.Pages.Account
@@ -21,20 +22,21 @@ namespace XPelum.Areas.Identity.Pages.Account
         private readonly UserManager<Cliente> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly UserRepository _userRepository;
+        private readonly ValidaCpfService _validaCpfService;
 
         public RegisterModel(
             UserManager<Cliente> userManager,
             SignInManager<Cliente> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            UserRepository userRepository)
+            ValidaCpfService validaCpfService
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _userRepository = userRepository;
+            _validaCpfService = validaCpfService;
         }
 
         [BindProperty]
@@ -55,9 +57,7 @@ namespace XPelum.Areas.Identity.Pages.Account
 
             //criar validação de cpf
             [Required(ErrorMessage = "O campo {0} é obrigatório")]
-            [StringLength(14, ErrorMessage = "O campo {0} Deve ter entre {1} caracteres.", MinimumLength = 14)]
-            //[RegularExpression(@"(^\d{3}\x2E\d{3}\x2E\d{3}\x2D\d{2}$)", ErrorMessage = "Cpf Invalido")]
-            [RegularExpression(@"^([0-9]){3}\.([0-9]){3}\.([0-9]){3}-([0-9]){2}$", ErrorMessage = "Cpf Invalido")]
+            [StringLength(11, ErrorMessage = "O campo {0} Deve ter entre {1} caracteres.", MinimumLength = 11)]
             [Display(Name = "CPF*")]
             public string CPF { get; set; }
 
@@ -93,12 +93,7 @@ namespace XPelum.Areas.Identity.Pages.Account
 
             var user = new Cliente { NomeCompleto = Input.NomeCompleto, UserName = Input.Email, Email = Input.Email, CPF = Input.CPF, DataNascimento = Input.DataNascimento };
 
-            var cliente = _userRepository.BuscarPorCpf(user.CPF);
-            if(!user.VerificarClientePorCpf(cliente))
-                ModelState.AddModelError(user.CPF, $"Cpf '{user.CPF}' já está sendo utilizado.");
-            //
-
-            if (ModelState.IsValid && user.VerificarClientePorCpf(cliente))
+            if (ModelState.IsValid && _validaCpfService.ValidarCpf(user.CPF))
             {
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 
@@ -125,6 +120,11 @@ namespace XPelum.Areas.Identity.Pages.Account
                 }
             }
 
+            //mensagems de erro de validação de cpf  
+            foreach (var error in _validaCpfService.ListaDeErros)
+            {
+                ModelState.AddModelError(string.Empty, error);
+            }
 
             // If we got this far, something failed, redisplay form
             return Page();

@@ -19,6 +19,7 @@ using System.IO;
 using XPelum.Models;
 using XPelum.Areas.Identity;
 using XPelum.Areas.Identity.Repository;
+using XPelum.Areas.Identity.Services;
 
 namespace XPelum
 {
@@ -74,6 +75,8 @@ namespace XPelum
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<AssessoriaRepository, AssessoriaRepository>();
             services.AddScoped<UserRepository, UserRepository>();
+            services.AddScoped<ValidaCpfService, ValidaCpfService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
