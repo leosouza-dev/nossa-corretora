@@ -27,7 +27,7 @@ namespace XPelum.Areas.Identity.Services
                 return false;
             }
 
-            //utilizando a lib Maoli para checar cpf
+            //utilizando a lib. Maoli para checar cpf
             if (!Cpf.Validate(cpf))
             {
                 ListaDeErros.Add($"O CPF {cpf} é invalido!");
