@@ -1,0 +1,51 @@
+﻿@model IEnumerable<XPelum.Models.Assessoria>
+
+@{
+    ViewData["Title"] = "Assessorias";
+}
+
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+
+        <p>
+            <a class="btn btn-warning" asp-action="Create">Criar Nova</a>
+        </p>
+        <table class="table table-hover table-light">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Imagem)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Investimento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Descricao)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            <img src="~/img/@Html.DisplayFor(modelItem => item.Imagem)" alt="Imagem da Acesoria" style=" height: 100px; width:auto" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Investimento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>

@@ -1,0 +1,64 @@
+﻿@model XPelum.ViewModel.CreateAssessoriaViewModel
+
+@{
+    ViewData["Title"] = "Criar Novo Tipo de Assessoria";
+}
+    <div class="container bg-light">
+        <h1>@ViewData["Title"]</h1>
+
+        <h4>Tipo de Assessoria</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create" enctype="multipart/form-data" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Nome" class="control-label"></label>
+                        <input asp-for="Nome" class="form-control" />
+                        <span asp-validation-for="Nome" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="investimento" class="control-label"></label>
+                        <input asp-for="investimento" class="form-control" />
+                        <span asp-validation-for="investimento" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Descricao" class="control-label"></label>
+                        <input asp-for="Descricao" class="form-control" />
+                        <span asp-validation-for="Descricao" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Imagem" class="control-label"></label>
+                        <div>
+                            <div class="custom-file">
+                                <input asp-for="Imagem" class="form-control custom-file-input" />
+                                <label class="custom-file-label">Escolher Imagem...</label>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Descricao" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Adicionar" class="btn btn-warning" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
+        });
+    </script>
+}
