@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using XPelum.Areas.Identity.Repository;
 using XPelum.Areas.Identity.Services;
+using XPelum.CustomDataAnnotation;
 using XPelum.Models;
 
 namespace XPelum.Areas.Identity.Pages.Account
@@ -56,6 +57,7 @@ namespace XPelum.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             //criar validação de cpf
+            [CpfIsValid(ErrorMessage = "O {0} é invalido")]
             [Required(ErrorMessage = "O campo {0} é obrigatório")]
             [StringLength(11, ErrorMessage = "O campo {0} Deve ter entre {1} caracteres.", MinimumLength = 11)]
             [Display(Name = "CPF*")]
@@ -121,10 +123,10 @@ namespace XPelum.Areas.Identity.Pages.Account
             }
 
             //mensagems de erro de validação de cpf  
-            foreach (var error in _validaCpfService.ListaDeErros)
-            {
-                ModelState.AddModelError(string.Empty, error);
-            }
+            //foreach (var error in _validaCpfService.ListaDeErros)
+            //{
+            //    ModelState.AddModelError(string.Empty, error);
+            //}
 
             // If we got this far, something failed, redisplay form
             return Page();
