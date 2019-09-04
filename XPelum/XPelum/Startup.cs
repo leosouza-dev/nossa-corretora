@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XPelum.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using XPelum.Repository;
-using Microsoft.Extensions.FileProviders;
-using System.IO;
 using XPelum.Models;
 using XPelum.Areas.Identity;
 using XPelum.Areas.Identity.Repository;
 using XPelum.Areas.Identity.Services;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using Microsoft.Extensions.Options;
+using System.Reflection;
+using XPelum.Resources;
 
 namespace XPelum
 {
@@ -67,12 +67,41 @@ namespace XPelum
             });
 
 
-            //meu dbcontext
+            // meu dbcontext
             services.AddDbContext<MeuDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            // (2) incluindo a localization para internacionalização
+            services.AddSingleton<IdentityLocalizationService>();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix) // (3) -
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                    {
+                        var assemblyName = new AssemblyName(typeof(IdentityResource).GetTypeInfo().Assembly.FullName);
+                        return factory.Create("IdentityResource", assemblyName.Name);
+                    };
+                });
+
+            services.Configure<RequestLocalizationOptions>(options =>
+                {
+                    var cultures = new List<CultureInfo>
+                    {
+                    new CultureInfo("en"),
+                    new CultureInfo("pt-BR")
+                };
+                    options.DefaultRequestCulture = new RequestCulture("pt-BR");
+                    options.SupportedCultures = cultures;
+                    options.SupportedUICultures = cultures;
+                    options.RequestCultureProviders.Insert(0, new CookieRequestCultureProvider());
+                });
+
+            //Injeção de Dependencias
             services.AddScoped<AssessoriaRepository, AssessoriaRepository>();
             services.AddScoped<UserRepository, UserRepository>();
             services.AddScoped<ValidaCpfService, ValidaCpfService>();
@@ -96,6 +125,9 @@ namespace XPelum
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
+
+            app.UseRequestLocalization(
+                app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseCookiePolicy();
 

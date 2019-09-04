@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using XPelum.Models;
 using XPelum.Repository;
 
@@ -8,13 +9,16 @@ namespace XPelum.Controllers
     public class HomeController : Controller
     {
         private readonly AssessoriaRepository _repository;
-        public HomeController(AssessoriaRepository repository)
+        private readonly IStringLocalizer<HomeController> _localizer;
+        public HomeController(AssessoriaRepository repository, IStringLocalizer<HomeController> localizer)
         {
             _repository = repository;
+            _localizer = localizer;
         }
 
         public IActionResult Index()
-        {       
+        {
+            ViewData["Mensagem"] = _localizer["TESTEE"];
             return View(_repository.ListarTodas());
         }
 

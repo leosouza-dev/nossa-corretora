@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using XPelum.Areas.Identity.Repository;
 using XPelum.Areas.Identity.Services;
 using XPelum.CustomDataAnnotation;
 using XPelum.Models;
+using XPelum.Resources;
 
 namespace XPelum.Areas.Identity.Pages.Account
 {
@@ -24,13 +25,15 @@ namespace XPelum.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly ValidaCpfService _validaCpfService;
+        private readonly IStringLocalizer _identityLocalizer;
 
         public RegisterModel(
             UserManager<Cliente> userManager,
             SignInManager<Cliente> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            ValidaCpfService validaCpfService
+            ValidaCpfService validaCpfService,
+            IStringLocalizerFactory factory
             )
         {
             _userManager = userManager;
@@ -38,6 +41,11 @@ namespace XPelum.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _validaCpfService = validaCpfService;
+
+            var type = typeof(IdentityResource);
+            var assemblyName = new AssemblyName(type.GetTypeInfo().Assembly.FullName);
+            _identityLocalizer = factory.Create("IdentityResource", assemblyName.Name);
+
         }
 
         [BindProperty]
@@ -47,40 +55,41 @@ namespace XPelum.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required(ErrorMessage ="O campo {0} é obrigatório")]
-            [Display(Name = "Nome Completo*")]
+            [Required(ErrorMessage = "IsRequiredMsg")]
+            [Display(Name = "Name")]
             public string NomeCompleto { get; set; }
 
-            [Required(ErrorMessage = "O campo {0} é obrigatório")]
-            [EmailAddress(ErrorMessage = "Não é um Email válido")]
+            [Required(ErrorMessage = "IsRequiredMsg")]
+            [EmailAddress(ErrorMessage = "EmailMsg")]
             [Display(Name = "Email*")]
             public string Email { get; set; }
 
             //criar validação de cpf
-            [CpfIsValid(ErrorMessage = "O {0} é invalido")]
-            [Required(ErrorMessage = "O campo {0} é obrigatório")]
-            [StringLength(11, ErrorMessage = "O campo {0} Deve ter entre {1} caracteres.", MinimumLength = 11)]
-            [Display(Name = "CPF*")]
+            [CpfIsValid(ErrorMessage = "CpfMsg")]
+            [Required(ErrorMessage = "IsRequiredMsg")]
+            [StringLength(11, ErrorMessage = "StringLengthCpfMsg", MinimumLength = 11)]
+            [Display(Name = "ID")]
             public string CPF { get; set; }
 
-            [Required(ErrorMessage = "O campo {0} é obrigatório")]
+            [Required(ErrorMessage = "IsRequiredMsg")]
             [DataType(DataType.DateTime)]
-            [Display(Name = "Data de Nascimento*")]
+            [Display(Name = "DateOfBirth")]
             public DateTime DataNascimento { get; set; }
 
-            [Required(ErrorMessage = "O campo {0} é obrigatório")]
-            [Display(Name = "Telefone Celular*")]
+            [Required(ErrorMessage = "IsRequiredMsg")]
+            [Display(Name = "CellPhone")]
             public string PhoneNumber { get; set; }
 
-            [Required(ErrorMessage = "O campo {0} é obrigatório")]
-            [StringLength(100, ErrorMessage = "O campo {0} Deve ter entre {2} e {1} caracteres.", MinimumLength = 6)]
+            [Required(ErrorMessage = "IsRequiredMsg")]
+            [StringLength(100, ErrorMessage = "StringLengthMsg", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Senha*")]
+            [Display(Name = "Password")]
             public string Password { get; set; }
 
+            [Required(ErrorMessage = "IsRequiredMsg")]
             [DataType(DataType.Password)]
-            [Display(Name = "Confirmar Senha*")]
-            [Compare("Password", ErrorMessage = "A senha e confirmação de senha não estão iguais.")]
+            [Display(Name = "ConfirmPassword")]
+            [Compare("Password", ErrorMessage = "ConfirmPasswordMsg")]
             public string ConfirmPassword { get; set; }
         }
 
